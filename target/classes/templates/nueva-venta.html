@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Sistema de venta</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script type="text/javascript">
+            function getVehiculo() {
+                var vehiculovin = $(select_vehiculos).val();
+                console.log(vehiculovin);
+                $.ajax({
+                    url: "/vehiculo/"+vehiculovin,
+                    type: "GET",
+                    success: function (data) {
+
+                        $("#divMarca").html(data.marca);
+                        $("#divModelo").html(data.modelo);
+                        $("#divVin").html(data.vin);
+                        $("#divPatente").html(data.patente);
+                        $("#divAnio").html(data.anio);
+                        $("#divColor").html(data.color);
+                        $("#divEstado").html(data.estado);
+                        $("#divKilo").html(data.kilometraje);
+                        $("#divTrans").html(data.transmision);
+                        $("#divCombustible").html(data.tipoCombustible);
+                        $("#divDisponibilidad").html(data.disponibilidad);
+                        $("#divPrecio").html(data.precioUnitario);
+
+                    }, error: function (jqXHR, textStatus, errorThrown) {
+                        
+                    }
+                });
+            }
+            function getCliente() {
+                var rut = $(rut_cliente).val();
+                console.log(rut);
+                $.ajax({
+                    url: "/cliente/"+rut,
+                    type: "GET",
+                    success: function (data) {
+
+                        $("#divRut").html(data.rut);
+                        $("#divnombre").html(data.nombres);
+                        $("#divapaterno").html(data.apellidoPaterno);
+                        $("#divamaterno").html(data.apellidoMaterno);
+                        $("#divnacimiento").html(data.fechaNacimiento);
+                        $("#divnacionalidad").html(data.nacionalidad);
+                        $("#divgenero").html(data.genero);
+                        $("#divcalle").html(data.calle);
+                        $("#divnumero").html(data.numero);
+                        $("#divdepto").html(data.depto);
+                        $("#divciudad").html(data.ciudad);
+                        $("#divtelefono").html(data.telefono);
+                        $("#divemail").html(data.email);
+                        $("#divactividad").html(data.actividadEconomica);
+
+                        $("#divfechacontrato").html(data.fechaInicioContrato);
+                        $("#divcargo").html(data.cargo);
+                        $("#divrenta").html(data.rentaLiquidaMensual);
+
+                    }, error: function(e) {
+                        $("#divError").html("<strong>Cliente no registrado.</strong>");
+
+                    }
+                });
+            }
+        </script>
+    </head>
+
+    <body>
+
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="/">Inicio</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <!-- <a class="nav-item nav-link active" href="#">Inicio <span class="sr-only">(current)</span></a> -->
+                    <a class="nav-item nav-link" href="/clientes">Clientes</a>
+                    <a class="nav-item nav-link" href="/stock">Stock</a>
+                    <a class="nav-item nav-link" href="/ventas">Ventas</a>
+                </div>
+            </div>
+        </nav>
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col-6">
+                <form action="#" th:action="@{/generar_venta}" th:object="${venta}" method="post">
+
+                    <h1 class="py-3">Proceso de venta</h1>
+                    <div class="card my-2"> <!-- Info. cliente -->
+                        <h5 class="card-header">1. Información del cliente</h5>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="rut_cliente" onchange="getCliente()" placeholder="Ingrese rut">
+                                <small class="form-text text-muted"><a href="/signup" class="my-2 text-decoration-none">Registrar nuevo cliente</a> </small>
+                                <div class="divError"></div>
+                                <table class="table">
+                                    <thead>
+
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <th scope="row">Rut</th>
+                                        <td id="divRut"></td>
+
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Nombres</th>
+                                        <td id="divnombre"></td>
+
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Apellido Paterno</th>
+                                        <td id="divapaterno"></td>
+
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Apellido Materno</th>
+                                        <td id="divamaterno"></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Fecha de Nacimiento</th>
+                                        <td id="divnacimiento"></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Nacionalidad</th>
+                                        <td id="divnacionalidad"></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Género</th>
+                                        <td id="divgenero"></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Calle</th>
+                                        <td id="divcalle"></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Número</th>
+                                        <td id="divnumero"></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Depto.</th>
+                                        <td id="divdepto"></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Ciudad</th>
+                                        <td id="divciudad"></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Teléfono</th>
+                                        <td id="divtelefono"></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Email</th>
+                                        <td id="divemail"></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Actividad económica</th>
+                                        <td id="divactividad"></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Fecha Inicio Contrato</th>
+                                        <td id="divfechacontrato"></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Cargo</th>
+                                        <td id="divcargo"></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Renta líquida</th>
+                                        <td id="divrenta"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- <button type="submit" class="btn btn-primary">Buscar</button> -->
+
+                    <div class="card"> <!-- Info. vehículo -->
+                        <h5 class="card-header">2. Información del vehículo</h5>
+                        <div class="card-body">
+                            <select class="form-control" id="select_vehiculos" required="required" onchange="getVehiculo()">
+                                <option selected disabled>Seleccione vehículo</option>
+                                <option th:each="vehiculo : ${vehiculos}"
+                                        th:value="${vehiculo.vin}"
+                                        th:text="${vehiculo.marca} + ' '+ ${vehiculo.modelo}"></option>
+
+                            </select>
+
+                            <table class="table">
+                                <thead>
+
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <th scope="row">VIN</th>
+                                    <td id="divVin"></td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="row">Marca</th>
+                                    <td id="divMarca"></td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="row">Modelo</th>
+                                    <td id="divModelo"></td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="row">Año</th>
+                                    <td id="divAnio"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Color</th>
+                                    <td id="divColor"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Estado</th>
+                                    <td id="divEstado"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Kilometraje</th>
+                                    <td id="divKilo"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Transmisión</th>
+                                    <td id="divTrans"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Tipo de Combustible</th>
+                                    <td id="divCombustible"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Disponibilidad</th>
+                                    <td id="divDisponibilidad"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Patente</th>
+                                    <td id="divPatente"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Precio venta</th>
+                                    <td id="divPrecio"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div> <!-- Accesorios -->
+                    <div class="card my-2">
+                        <h5 class="card-header">3. Agregar accesorios</h5>
+                        <div class="card-body">
+                            <select class="form-control" required="required">
+                                <option selected disabled>Accesorios</option>
+                                <option>Radio $39.990</option>
+                                <option>Funda de asientos $9.990</option>
+                                <option>Portaequipaje $9.990</option>
+                                <option>Tweeter $5.990</option>
+                                <option>Aromatizador $1.990</option>
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card mb-5">
+                        <h5 class="card-header">4. Medio de pago</h5>
+                        <div class="card-body">
+                            <select class="form-control" required="required">
+                                <option selected disabled>Seleccione el medio de pago</option>
+                                <option text="Efectivo" th:value="1">Efectivo</option>
+                                <option text="Tarjeta de Crédito" th:value="2">Tarjeta de Crédito</option>
+                                <option text="Tarjeta de Débito" th:value="3">Tarjeta de Débito</option>
+                                <option text="Cheques" th:value="4">Cheques</option>
+                            </select>
+
+                            <div class="input-group my-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">$</div>
+                                </div>
+                                <div class="">
+                                    <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Monto cancelado">
+                                </div>
+                            </div>
+
+                            <div class="my-3 text-center">
+                                <button type="button" class="btn btn-outline-success btn-lg">Terminar venta</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-3"></div>
+        </div>
+    </div>
+
+
+    </body>
+</html>
